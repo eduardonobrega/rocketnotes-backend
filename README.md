@@ -30,7 +30,6 @@ npm run dev
 - Upload de imagens;
 - API Restful;
 - Cors;
-- testes;
 
 
 ## Autor
