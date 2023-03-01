@@ -30,7 +30,11 @@ npm run dev
 - Upload de imagens;
 - API Restful;
 - Cors;
-
+- PM2;
+- Deploy e utilização do render;
+- Variáveis de ambiente;
+- Testes automatizados;
+- Jest;
 
 ## Autor
 
