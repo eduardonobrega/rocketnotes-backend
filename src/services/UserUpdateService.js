@@ -37,6 +37,8 @@ class UserUpdateService {
     }
 
     await this.userRepository.update(user);
+
+    return {id: user.id }
   }
 }
 

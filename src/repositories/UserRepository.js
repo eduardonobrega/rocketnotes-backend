@@ -15,7 +15,7 @@ class UserRepository {
   async update(user) {
     const database = await sqliteConnection();
 
-    await database.run(
+    const retorno = await database.run(
       `
       UPDATE users SET
       name = ?,

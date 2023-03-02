@@ -4,7 +4,7 @@ class UserRepositoryInMemory {
 
   async create({ name, email, password }) {
     const user = {
-      id: Math.floor(Math.random() * 1000) + 1,
+      id: this.users.length + 1,
       name,
       email,
       password,
@@ -16,8 +16,8 @@ class UserRepositoryInMemory {
   }
 
   async update(updatedUser) {
-    const currentDate = new Date.now();
-    console.log(updatedUser);
+    // const currentDate = new Date.now();
+    // console.log(currentDate);
     this.users = this.users.map((user) => {
       if (user.id === updatedUser.id) {
         user.name = updatedUser.name;
@@ -25,6 +25,8 @@ class UserRepositoryInMemory {
         user.password = updatedUser.password;
       }
     });
+
+    return {id: updatedUser.id}
   }
 
   async findById(id) {
