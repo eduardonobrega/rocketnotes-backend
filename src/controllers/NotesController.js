@@ -1,41 +1,21 @@
-const knex = require('../database/knex');
-const AppError = require('../utils/AppError');
-
 const NotesRepository = require('../repositories/NotesRepository');
+const NotesCreateService = require('../services/NotesCreateService');
 
 class NotesController {
   async create(request, response) {
     const { title, description, tags, links } = request.body;
     const user_id = request.user.id;
 
-    if (!title) throw new AppError('É preciso informar o título da nota!');
-
     const notesRepository = new NotesRepository();
+    const notesCreateService = new NotesCreateService(notesRepository);
 
-    const note_id = await notesRepository.createNote({
+    await notesCreateService.execute({
       title,
       description,
+      tags,
+      links,
       user_id,
     });
-
-    if (tags.length !== 0) {
-      const tagsInsert = tags.map((tag) => ({
-        name: tag.trim(),
-        note_id,
-        user_id,
-      }));
-
-      await notesRepository.createNoteTags(tagsInsert);
-    }
-
-    if (links.length !== 0) {
-      const linksInsert = links.map((link) => ({
-        url: link,
-        note_id,
-      }));
-
-      await notesRepository.createNoteLink(linksInsert);
-    }
 
     return response.json();
   }
