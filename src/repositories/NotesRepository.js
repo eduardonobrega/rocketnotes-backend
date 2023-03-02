@@ -3,18 +3,23 @@ const knex = require('../database/knex');
 class NotesRepository {
   async createNote({ title, description, user_id }) {
     const note_id = await knex('notes').insert({ title, description, user_id });
-    return note_id;
+    return { id: note_id };
   }
+
   async deleteNote(id) {
     await knex('notes').where({ id }).delete();
   }
 
   async createNoteTags(tags) {
-    await knex('tags').insert(tags);
+    const noteTags = await knex('tags').insert(tags);
+
+    return { id: noteTags };
   }
 
   async createNoteLink(links) {
-    await knex('links').insert(links);
+    const noteLinks_id = await knex('links').insert(links);
+
+    return { id: noteLinks_id };
   }
 
   async findNoteById(id) {

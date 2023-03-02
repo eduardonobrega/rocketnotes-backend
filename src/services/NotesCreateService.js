@@ -8,12 +8,16 @@ class NotesCreateService {
   async execute({ title, description, tags, links, user_id }) {
     if (!title) throw new AppError('É preciso informar o título da nota!');
 
-    const note_id = await this.notesRepository.createNote({
+    tags = tags ?? [];
+    links = links ?? [];
+
+    const { id: note_id } = await this.notesRepository.createNote({
       title,
       description,
       user_id,
     });
 
+    let tagsCreated;
     if (tags.length !== 0) {
       const tagsInsert = tags.map((tag) => ({
         name: tag.trim(),
@@ -21,17 +25,24 @@ class NotesCreateService {
         user_id,
       }));
 
-      await this.notesRepository.createNoteTags(tagsInsert);
+      tagsCreated = await this.notesRepository.createNoteTags(tagsInsert);
     }
 
+    let linksCreated;
     if (links.length !== 0) {
       const linksInsert = links.map((link) => ({
         url: link,
         note_id,
       }));
 
-      await this.notesRepository.createNoteLink(linksInsert);
+      linksCreated = await this.notesRepository.createNoteLink(linksInsert);
     }
+
+    return {
+      id: note_id,
+      noteTags_id: tagsCreated?.id,
+      noteLinks_id: linksCreated?.id,
+    };
   }
 }
 
