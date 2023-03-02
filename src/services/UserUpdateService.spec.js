@@ -14,10 +14,6 @@ describe('UserUpdateService', () => {
   });
 
   it('user should be update', async () => {
-    const userRepository = new UserRepositoryInMemory();
-    const userCreateService = new UserCreateService(userRepository);
-    const userUpdateService = new UserUpdateService(userRepository);
-
     const user = {
       name: 'User Test',
       email: 'user@test.com',
@@ -63,6 +59,51 @@ describe('UserUpdateService', () => {
 
     await expect(userUpdateService.execute(user2Update)).rejects.toEqual(
       new AppError('Email já está sendo usado!')
+    );
+  });
+
+  it('user must inform old password to change', async () => {
+    const user = {
+      name: 'User Test',
+      email: 'user@test.com',
+      password: '123',
+    };
+
+    const { id: user_id } = await userCreateService.execute(user);
+
+    const userUpdate = {
+      id: user_id,
+      name: ' Updated User Test',
+      email: 'user.test@test.com',
+      newPassword: '456',
+    };
+
+    await expect(userUpdateService.execute(userUpdate)).rejects.toEqual(
+      new AppError(
+        'Você precisa informar a senha antiga para definir a nova senha!'
+      )
+    );
+  });
+
+  it('password validation', async () => {
+    const user = {
+      name: 'User Test',
+      email: 'user@test.com',
+      password: '123',
+    };
+
+    const { id: user_id } = await userCreateService.execute(user);
+
+    const userUpdate = {
+      id: user_id,
+      name: ' Updated User Test',
+      email: 'user.test@test.com',
+      oldPassword: '009',
+      newPassword: '456',
+    };
+
+    await expect(userUpdateService.execute(userUpdate)).rejects.toEqual(
+      new AppError('Senha antiga não confere!')
     );
   });
 });
