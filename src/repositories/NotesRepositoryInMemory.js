@@ -21,13 +21,21 @@ class NotesRepositoryInMemory {
       id: this.notesTags.length + 1,
       tags,
     };
-    
+
     this.notesTags.push(noteTags);
 
     return { id: noteTags.id };
   }
 
-  async createNoteLink(links) {}
+  async createNoteLink(links) {
+    const noteLinks = {
+      id: this.notesLinks.length + 1,
+      links,
+    };
+    this.notesLinks.push(noteLinks);
+
+    return { id: noteLinks.id };
+  }
 }
 
 module.exports = NotesRepositoryInMemory;
