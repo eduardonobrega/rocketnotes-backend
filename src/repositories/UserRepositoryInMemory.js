@@ -16,29 +16,32 @@ class UserRepositoryInMemory {
   }
 
   async update(updatedUser) {
-    // const currentDate = new Date.now();
-    // console.log(currentDate);
     this.users = this.users.map((user) => {
       if (user.id === updatedUser.id) {
-        user.name = updatedUser.name;
-        user.email = updatedUser.email;
-        user.password = updatedUser.password;
+        user = updatedUser;
       }
+      return user;
     });
 
-    return {id: updatedUser.id}
+    return { id: updatedUser.id };
   }
 
   async findById(id) {
     const user = this.users.find((user) => user.id === id);
+    if (!user) {
+      return undefined;
+    }
 
-    return user;
+    return { ...user };
   }
 
   async findByEmail(email) {
     const user = this.users.find((user) => user.email === email);
+    if (!user) {
+      return undefined;
+    }
 
-    return user;
+    return { ...user };
   }
 }
 

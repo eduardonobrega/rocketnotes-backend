@@ -1,7 +1,7 @@
 {
   "name": "rocketnotes-backend",
   "version": "1.0.0",
-  "description": "Revisão de node da aplicação rocketnotes",
+  "description": "REST API da aplicação rocketnotes",
   "main": "index.js",
   "scripts": {
     "start": "pm2-runtime start ecosystem.config.js --env production",
